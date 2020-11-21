@@ -88,7 +88,7 @@ class File_operations
 				if(file.delete())
 					System.out.println("Deleted file: "+file.getName());
 				else
-					System.out.println("Failed to delete the file.");
+					System.out.println("Failed to delete the file as File Not Found(FNF)");
 			}
 		}
 
@@ -179,7 +179,13 @@ class Execute extends File_operations
 
 			System.out.print("\nContinue? (y/n): ");
 			context = input.next();
-		}while(!context.equals("n"));
+		}
+		while(!context.equals("n"));
+		if (context.equals("n"))
+		{
+			exit_application();
+		}
+		
 		sc.close();
 		input.close();
 	}
