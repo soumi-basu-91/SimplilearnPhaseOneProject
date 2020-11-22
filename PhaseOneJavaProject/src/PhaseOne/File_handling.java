@@ -1,10 +1,8 @@
 package PhaseOne;
 
-
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.File;
-import java.lang.System;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -28,12 +26,7 @@ class File_operations
 					Arrays.sort(files, new Comparator<File>(){
 						public int compare(File f1, File f2)
 						{
-							long f1Size = f1.length();
-							long f2Size = f2.length();
-							if (f1Size == f2Size)
-								return 0;
-							else
-								return Long.compare(f1Size, f2Size);
+							return ((File) f1).getName().compareTo(((File) f2).getName());
 						}
 					});
 
@@ -88,7 +81,7 @@ class File_operations
 				if(file.delete())
 					System.out.println("Deleted file: "+file.getName());
 				else
-					System.out.println("Failed to delete the file as File Not Found(FNF)");
+					System.out.println("Failed to delete the file as File not Found (FNF).");
 			}
 		}
 
@@ -102,32 +95,34 @@ class File_operations
 
 			File file = new File(file_path);
 
-			File [] list = file.listFiles();
+			String [] list = file.list();
+			int flag = 0;
 
 			if (list!=null)
 			{
-				for (File fil: list)
+				for (int i=0; i < list.length; i++)
 				{
-					if (file.exists())
+					String filename = list[i];
+					if (filename.equalsIgnoreCase(file_obj))
 					{
-						if (file_obj.equalsIgnoreCase(fil.getName()))
-							System.out.println(file_obj + " is present in " + fil.getParentFile());
-					}
-					else
-					{
-							System.out.println(file_obj + " is not present");
-							break;
+						System.out.println(filename + " is found in the directory");
+						flag = 1;
 					}
 				}
+				if(flag == 0)
+					System.out.println("File not found in the directory");
 			}
-		}
 
-		// Exit application
+			else
+				System.out.println("Directory is empty");
+		}
+		
 		public static void exit_application()
 		{
 			System.out.println("Exiting application");
 			System.exit(0);
 		}
+
 }
 
 // Inherit parent class File_operations to call for respective methods
@@ -139,16 +134,16 @@ class Execute extends File_operations
 		switch(user_option)
 		{
 			case 1: File dir = new File(dir_path);
-							get_files(dir);
+					get_files(dir);
 			        break;
 			case 2: add_files();
-				    	break;
+				    break;
 			case 3: delete_files();
 			        break;
 			case 4: search_file();
-							break;
+					break;
 			case 5: exit_application();
-							break;
+			        break;
 			default: System.out.println("Option not available");
 		}
 	}
@@ -161,7 +156,7 @@ class Execute extends File_operations
 		do
 		{
 			System.out.println("\nApplication: File Handler");
-			System.out.println("Developer: Soumi Basu");
+			System.out.println("Developer: Soumi Pal Basu");
 			System.out.println("===============================================");
 			System.out.println("\nUser Interface");
 			System.out.println("====================");
@@ -179,19 +174,13 @@ class Execute extends File_operations
 
 			System.out.print("\nContinue? (y/n): ");
 			context = input.next();
-		}
-		while(!context.equals("n"));
-		if (context.equals("n"))
-		{
-			exit_application();
-		}
-		
+		}while(!context.equals("n"));
 		sc.close();
 		input.close();
 	}
 }
 
-public class Script
+public class File_handling
 {
 	public static void main(String [] args)
 	{
